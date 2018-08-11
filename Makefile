@@ -9,6 +9,19 @@ deploy: $(SRCS)
 		-it tkfm_linux \
 		/home/user/work/src/github.com/jiro4989/tkfm/script/build.sh
 
+.PHONY: deploy
+deploy-demos: $(SRCS)
+	for d in `ls internal/demo/`; do \
+		docker run \
+			-v `pwd`:/home/user/work/src/github.com/jiro4989/tkfm \
+			-it tkfm_linux \
+			/home/user/work/src/github.com/jiro4989/tkfm/script/build.sh internal/demo/$$d ; \
+	done
+
+.PHONY: run
+run:
+	./deploy/linux/tkfm
+
 .PHONY: clean
 clean:
 	-sudo rm -rf deploy/
