@@ -1,22 +1,25 @@
 SRCS := $(shell find . -type f -name '*.go')
+BUILD_SCRIPT := /home/user/work/src/github.com/jiro4989/tkfm/script/build.sh
+DEPLOY_OPT := -v `pwd`:/home/user/work/src/github.com/jiro4989/tkfm \
+		-it tkfm_linux
 
 # バイナリ系のタスク
 
 .PHONY: deploy
 deploy: $(SRCS)
-	docker run \
-		-v `pwd`:/home/user/work/src/github.com/jiro4989/tkfm \
-		-it tkfm_linux \
-		/home/user/work/src/github.com/jiro4989/tkfm/script/build.sh
+	docker run $(DEPLOY_OPT) $(BUILD_SCRIPT)
 
-.PHONY: deploy
+.PHONY: deploy-demos
 deploy-demos: $(SRCS)
 	for d in `ls internal/demo/`; do \
-		docker run \
-			-v `pwd`:/home/user/work/src/github.com/jiro4989/tkfm \
-			-it tkfm_linux \
-			/home/user/work/src/github.com/jiro4989/tkfm/script/build.sh internal/demo/$$d ; \
+		docker run $(DEPLOY_OPT) $(BUILD_SCRIPT) internal/demo/$$d ; \
 	done
+
+# でもアプリを単体デプロイ
+.PHONY: deploy-demo
+deploy-demo: $(SRCS)
+	if [ -z "$(APP)" ]; then echo Need APP variables; exit 1; fi
+	docker run $(DEPLOY_OPT) $(BUILD_SCRIPT) internal/demo/$(APP)
 
 .PHONY: run
 run:
