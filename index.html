@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <style>
+    body {
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      height: 100%;
+    }
+
+    .left {
+      width: 300px;
+      background-color: black;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .top {
+      flex: 2;
+      background-color: red;
+    }
+
+    .bottom {
+      height: 300px;
+      background-color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <h1>Hello World!</h1>
+  We are using node <script>
+    document.write(process.versions.node)
+  </script>,
+  Chrome <script>
+    document.write(process.versions.chrome)
+  </script>,
+  and Electron <script>
+    document.write(process.versions.electron)
+  </script>. -->
+  <div class="container">
+    <div class="left">
+      left
+    </div>
+    <div class="right">
+
+      <div class="top">
+        top
+      </div>
+      <div class="bottom">
+        bottom
+      </div>
+
+    </div>
+  </div>
+</body>
+
 </html>
