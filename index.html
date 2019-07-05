@@ -46,6 +46,7 @@
       background-color: green;
     }
   </style>
+  <script src="util.js"> </script>
   <!--
   <script>
     const $ = (q) => document.querySelector(q);
@@ -75,37 +76,6 @@
       moveFocus();
     }
 
-    /**
-     * moveFocus はトリミング位置のレイヤーを移動する。
-     * 上下左右のレイヤを更新し、トリミング位置だけcanvas描画を消す。
-     * @param {*} state 
-     */
-    function moveFocus(state) {
-      const canvas = $("#focusLayerCanvas")
-      const context = canvas.getContext("2d");
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      const layer = Util.calcLayerRects(
-        state.focusLayer.focus.x,
-        state.focusLayer.focus.y,
-        state.focusLayer.focus.width,
-        state.focusLayer.focus.height,
-        state.width,
-        state.height);
-
-      // 上下左右の位置を描画
-      context.fillStyle = "rgba(0, 0, 0, 0.3)";
-      const fill = (r) => context.fillRect(r.x, r.y, r.width, r.height);
-      const bgRect = layer.backgroundRects;
-      fill(bgRect.top);
-      fill(bgRect.right);
-      fill(bgRect.bottom);
-      fill(bgRect.left);
-
-      // トリミング位置のcanvas描画を削除
-      const foc = layer.focusRect;
-      context.clearRect(foc.x, foc.y, foc.width, foc.height);
-    }
   </script>
 -->
 </head>

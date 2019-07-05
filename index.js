@@ -31,29 +31,62 @@ imageFileSelect.ondrop = function (event) {
     return false;
 }
 
+// 画像ファイルselectを選択したときに、トリミング用キャンバスに画像を描画する。
+// 画像を描画する際には、キャンバスサイズを画像サイズに合わせて拡縮する。
 const canvas = $('#trimPreviewCanvas');
 const ctx = canvas.getContext("2d");
 const focus = $('#focusLayerCanvas');
 imageFileSelect.onchange = (event) => {
     const img = new Image();
-
     const idx = imageFileSelect.selectedIndex;
     const item = imageFileSelect.children[idx];
     img.src = item.value;
-    img.onload = function() {
+    img.onload = function () {
         const w = this.naturalWidth;
         const h = this.naturalHeight;
-        console.log(`width = ${w}`);
-        console.log(`height = ${h}`);
         canvas.setAttribute('width', w.toString());
         canvas.setAttribute('height', h.toString());
         focus.setAttribute('width', w.toString());
         focus.setAttribute('height', h.toString());
         ctx.drawImage(img, 0, 0, w, h);
     }
-
-    console.log(item);
 }
+
+/**
+ * moveFocus はトリミング位置のレイヤーを移動する。
+ * 上下左右のレイヤを更新し、トリミング位置だけcanvas描画を消す。
+ * @param {*} state 
+ */
+function moveFocus(event) {
+    const context = focus.getContext("2d");
+    context.clearRect(0, 0, focus.width, focus.height);
+
+    const x = event.offsetX;
+    const y = event.offsetY;
+    const layer = Util.calcLayerRects(
+        x,
+        y,
+        144, // TODO
+        144, // TODO
+        focus.width,
+        focus.height);
+
+    // 上下左右の位置を描画
+    context.fillStyle = "rgba(0, 0, 0, 0.3)";
+    const fill = (r) => context.fillRect(r.x, r.y, r.width, r.height);
+    const bgRect = layer.backgroundRects;
+    fill(bgRect.top);
+    fill(bgRect.right);
+    fill(bgRect.bottom);
+    fill(bgRect.left);
+
+    // トリミング位置のcanvas描画を削除
+    const foc = layer.focusRect;
+    context.clearRect(foc.x, foc.y, foc.width, foc.height);
+}
+
+canvas.ondragover = moveFocus;
+focus.ondragover = moveFocus;
 
 // //html内の要素取得とリスナーの設定
 // document.querySelector("#openFile").addEventListener('click', () => {

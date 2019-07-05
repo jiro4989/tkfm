@@ -23,56 +23,60 @@ class Util {
      * @return 画像promise
      */
     static async readAsDataURL(file) {
-      return new Promise((resolve, reject) => {
-        const img = new FileReader();
-        img.onload = resolve;
-        img.onerror = reject;
-        img.readAsDataURL(file);
-      })
+        return new Promise((resolve, reject) => {
+            const img = new FileReader();
+            img.onload = resolve;
+            img.onerror = reject;
+            img.readAsDataURL(file);
+        })
     }
-  
+
     /**
      * loadImageFromSource はEventの画像から画像データを取得する。
      * @param {*} src 
      */
     static async loadImageFromSource(src) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = function () {
-          const image = this;
-          const width = this.naturalWidth;
-          const height = this.naturalHeight;
-          resolve({ image: image, width: width, height: height })
-        };
-        img.onerror = reject;
-        img.src = src;
-      })
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = function () {
+                const image = this;
+                const width = this.naturalWidth;
+                const height = this.naturalHeight;
+                resolve({
+                    image: image,
+                    width: width,
+                    height: height
+                })
+            };
+            img.onerror = reject;
+            img.src = src;
+        })
     }
-  
+
     /**
      * clearCanvas は指定のCanvasを初期化する。
      * @param {string} canvasId キャンバス要素iD
      */
     static clearCanvas(canvasId) {
-      const canvas = document.getElementById(canvasId);
-      const context = canvas.getContext("2d");
-      context.clearRect(0, 0, canvas.width, canvas.height);
+        const canvas = document.getElementById(canvasId);
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
     }
-  
+
     static trimImage(canvasId, file, x, y, width, height) {
-      const img = new FileReader();
-      img.onload = (event) => {
-        const b = new Image();
-        b.onload = () => {
-          const canvas = document.getElementById(canvasId);
-          const context = canvas.getContext("2d");
-          context.drawImage(b, 0, 0, width, height, x, y, width, height);
+        const img = new FileReader();
+        img.onload = (event) => {
+            const b = new Image();
+            b.onload = () => {
+                const canvas = document.getElementById(canvasId);
+                const context = canvas.getContext("2d");
+                context.drawImage(b, 0, 0, width, height, x, y, width, height);
+            }
+            b.src = event.target.result;
         }
-        b.src = event.target.result;
-      }
-      img.readAsDataURL(file);
+        img.readAsDataURL(file);
     }
-  
+
     /**
      * トリミング位置を計算する。
      * @param {number} index タイルインデックス
@@ -83,20 +87,29 @@ class Util {
      * @return トリミング開始位置(左上)
      */
     static calcPos(index, row, col, width, height) {
-      if (index <= 0) return { x: 0, y: 0 }
-  
-      const max = row * col;
-      if (max <= 0) return { x: 0, y: 0 }
-  
-      if (max <= index) {
-        index -= max;
-      }
-      const x = index % col * width;
-      let y = Math.floor(index / col);
-      y *= height;
-      return { x: x, y: y }
+        if (index <= 0) return {
+            x: 0,
+            y: 0
+        }
+
+        const max = row * col;
+        if (max <= 0) return {
+            x: 0,
+            y: 0
+        }
+
+        if (max <= index) {
+            index -= max;
+        }
+        const x = index % col * width;
+        let y = Math.floor(index / col);
+        y *= height;
+        return {
+            x: x,
+            y: y
+        }
     }
-  
+
     /**
      * calcLayerRects はフォーカスと背景の矩形位置と幅を計算して返す。
      * 返却する矩形位置は下記の図の通り。
@@ -119,62 +132,72 @@ class Util {
      * @return {LayerRects} フォーカスと背景の矩形
      */
     static calcLayerRects(x, y, width, height, maxWidth, maxHeight) {
-      const zeroRect = {x:0, y:0, width:0, height:0}
-      const zeroLayer = {
-        focusRect: zeroRect,
-        backgroundRects: {
-          top: zeroRect,
-          right: zeroRect,
-          bottom: zeroRect,
-          left: zeroRect,
+        const zeroRect = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
         }
-      };
-      if (maxWidth <= 0) return zeroLayer;
-      if (maxHeight <= 0) return zeroLayer;
-  
-      x = Math.max(0, x);
-      y = Math.max(0, y);
-      width = Math.max(0, width);
-      height = Math.max(0, height);
-      width = Math.min(maxWidth, width);
-      height = Math.min(maxHeight, height);
-      if (maxWidth < x + width) x = maxWidth - width;
-      if (maxHeight < y + height) y = maxHeight - height;
-  
-      const focusRect = {
-        x: x,
-        y: y,
-        width: width,
-        height: height
-      };
-      const backgroundRects = {
-        top: {
-          x: 0,
-          y: 0,
-          width: x + width,
-          height: y,
-        },
-        right: {
-          x: x + width,
-          y: 0,
-          width: maxWidth - x - width,
-          height: y + height,
-        },
-        bottom: {
-          x: x,
-          y: y + height,
-          width: maxWidth - x,
-          height: maxHeight - y - height,
-        },
-        left: {
-          x: 0,
-          y: y,
-          width: x,
-          height: maxHeight - y,
-        },
-      };
-      return { focusRect: focusRect, backgroundRects: backgroundRects }
+        const zeroLayer = {
+            focusRect: zeroRect,
+            backgroundRects: {
+                top: zeroRect,
+                right: zeroRect,
+                bottom: zeroRect,
+                left: zeroRect,
+            }
+        };
+        if (maxWidth <= 0) return zeroLayer;
+        if (maxHeight <= 0) return zeroLayer;
+
+        x = Math.max(0, x);
+        y = Math.max(0, y);
+        width = Math.max(0, width);
+        height = Math.max(0, height);
+        width = Math.min(maxWidth, width);
+        height = Math.min(maxHeight, height);
+        if (maxWidth < x + width) x = maxWidth - width;
+        if (maxHeight < y + height) y = maxHeight - height;
+
+        const focusRect = {
+            x: x,
+            y: y,
+            width: width,
+            height: height
+        };
+        const backgroundRects = {
+            top: {
+                x: 0,
+                y: 0,
+                width: x + width,
+                height: y,
+            },
+            right: {
+                x: x + width,
+                y: 0,
+                width: maxWidth - x - width,
+                height: y + height,
+            },
+            bottom: {
+                x: x,
+                y: y + height,
+                width: maxWidth - x,
+                height: maxHeight - y - height,
+            },
+            left: {
+                x: 0,
+                y: y,
+                width: x,
+                height: maxHeight - y,
+            },
+        };
+        return {
+            focusRect: focusRect,
+            backgroundRects: backgroundRects
+        }
     }
-  }
-  
-  module.exports = Util;
+}
+
+// if (module !== undefined) {
+//     module.exports = Util;
+// }
