@@ -14,7 +14,7 @@ document.ondragover = document.ondrop = function (event) {
 };
 
 // 画像選択リストに画像ファイルをドラッグ＆ドロップしたときのイベント
-let imageFileSelect = $('#imageFileSelect');
+const imageFileSelect = $('#imageFileSelect');
 imageFileSelect.ondragover = () => false;
 imageFileSelect.ondragleave = imageFileSelect.ondragend = () => false;
 imageFileSelect.ondrop = function (event) {
@@ -30,6 +30,22 @@ imageFileSelect.ondrop = function (event) {
 
     return false;
 };
+const canvas = $('#trimPreviewCanvas')
+imageFileSelect.onchange = (event) => {
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    const idx = imageFileSelect.selectedIndex;
+    const item = imageFileSelect.children[idx];
+    img.src = item.value;
+    img.onload = function() {
+        const w = this.naturalWidth;
+        const h = this.naturalHeight;
+        ctx.drawImage(img, 0, 0, w, h);
+    }
+
+    console.log(item);
+}
 
 // //html内の要素取得とリスナーの設定
 // document.querySelector("#openFile").addEventListener('click', () => {

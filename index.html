@@ -9,6 +9,10 @@
       height: 100vh;
     }
 
+    .file-select {
+      width: 200px;
+    }
+
     .container {
       display: flex;
       height: 100%;
@@ -104,14 +108,14 @@
   <div class="container">
     <div class="left">
       <h1>画像選択</h1>
-      <select name="imageFileSelect" id="imageFileSelect" multiple size="20">
+      <select name="imageFileSelect" id="imageFileSelect" class="file-select" multiple size="20">
       </select>
     </div>
     <div class="right">
       <div class="top">
         <h1>トリミング位置</h1>
         <div id="trimImagePane" style="position: relative; width: 100%; height: 500px; overflow: scroll;">
-          <canvas id="trimPreviewCanvas" style="position: absolute; top: 0px; left: 0px;" @mousemove="dragFocusLayer">
+          <canvas id="trimPreviewCanvas" style="position: absolute; top: 0px; left: 0px; width: 200px; height: 200px; " @mousemove="dragFocusLayer">
           </canvas>
           <canvas id="focusLayerCanvas" style="position: absolute; top: 0px; left: 0px;" @mousemove="dragFocusLayer">
           </canvas>

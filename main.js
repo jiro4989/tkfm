@@ -2,7 +2,8 @@
 const electron = require('electron');
 const {app} = electron;
 const {BrowserWindow} = electron; //ウィンドウを表す[BrowserWindow]はelectronモジュールに含まれている
-const {Menu} = electron; //ウィンドウを表す[BrowserWindow]はelectronモジュールに含まれている
+const {Menu} = electron;
+const {ipc} = electron.ipcMain;
 
 // 新しいウィンドウ(Webページ)を生成
 let win;
@@ -55,3 +56,20 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// ipc.on('read-image', function(event) {
+//   // console.log(arg);
+//   fileRead();
+//   event.sender.send('mul-async-replay', filePath);
+// });
+
+// ipc.on('mul-async-dialog', function(event, arg) {
+//     // console.log(arg[0]);
+//     if (!arg) {return;} // cancel selected
+//     path = arg[0];
+//     album = null;
+//     index = 0;
+//     fileRead();
+//     event.sender.send('mul-async-dialog-replay', filePath);
+//   }
+// );
