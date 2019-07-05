@@ -36,6 +36,66 @@
       background-color: green;
     }
   </style>
+  <script>
+    const $ = (q) => document.querySelector(q);
+    const $$ = (q) => document.querySelectorAll(q);
+
+    /**
+     * dragFocusLayer はマウスドラッグでトリミング位置を変更する
+     */
+    function dragFocusLayer(event) {
+      const LEFT_CLICK = 1;
+      if (event.buttons !== LEFT_CLICK) return;
+      updateTrimingLayger(event);
+    }
+
+    /**
+     * updateTrimingLayger はtトリミング位置のフォーカスを更新する。
+     * @param {*} param0 
+     * @param {*} event 
+     */
+    function updateTrimingLayger(event) {
+      let foc = $("#focusLayerCanvas");
+      // カーソル位置をトリミング範囲の中央にするために / 2
+      const x = event.offsetX - foc.width / 2;
+      const y = event.offsetY - foc.height / 2;
+      foc.x = x;
+      foc.y = y;
+      moveFocus();
+    }
+
+    /**
+     * moveFocus はトリミング位置のレイヤーを移動する。
+     * 上下左右のレイヤを更新し、トリミング位置だけcanvas描画を消す。
+     * @param {*} state 
+     */
+    function moveFocus(state) {
+      const canvas = $("#focusLayerCanvas")
+      const context = canvas.getContext("2d");
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      const layer = Util.calcLayerRects(
+        state.focusLayer.focus.x,
+        state.focusLayer.focus.y,
+        state.focusLayer.focus.width,
+        state.focusLayer.focus.height,
+        state.width,
+        state.height);
+
+      // 上下左右の位置を描画
+      context.fillStyle = "rgba(0, 0, 0, 0.3)";
+      const fill = (r) => context.fillRect(r.x, r.y, r.width, r.height);
+      const bgRect = layer.backgroundRects;
+      fill(bgRect.top);
+      fill(bgRect.right);
+      fill(bgRect.bottom);
+      fill(bgRect.left);
+
+      // トリミング位置のcanvas描画を削除
+      const foc = layer.focusRect;
+      context.clearRect(foc.x, foc.y, foc.width, foc.height);
+    }
+  </script>
 </head>
 
 <body>
@@ -53,7 +113,12 @@
     <div class="right">
       <div class="top">
         <h1>トリミング位置</h1>
-        <canvas id="cropCanvas"></canvas>
+        <div id="trimImagePane" style="position: relative; width: 100%; height: 500px; overflow: scroll;">
+          <canvas id="trimPreviewCanvas" style="position: absolute; top: 0px; left: 0px;" @mousemove="dragFocusLayer">
+          </canvas>
+          <canvas id="focusLayerCanvas" style="position: absolute; top: 0px; left: 0px;" @mousemove="dragFocusLayer">
+          </canvas>
+        </div>
       </div>
       <div class="bottom">
         <h1>出力画像プレビュー</h1>
