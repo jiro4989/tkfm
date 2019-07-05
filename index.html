@@ -39,29 +39,26 @@
 </head>
 
 <body>
-  <!-- <h1>Hello World!</h1>
-  We are using node <script>
-    document.write(process.versions.node)
-  </script>,
-  Chrome <script>
-    document.write(process.versions.chrome)
-  </script>,
-  and Electron <script>
-    document.write(process.versions.electron)
-  </script>. -->
   <div class="container">
     <div class="left">
-      left
+      <h1>画像選択</h1>
+      <select name="imageFileSelect" id="imageFileSelect" multiple size="20">
+        <option value="actor1.png">actor1.png</option>
+        <option value="actor2.png">actor2.png</option>
+        <option value="actor3.png">actor3.png</option>
+        <option value="actor4.png">actor4.png</option>
+        <option value="actor5.png">actor5.png</option>
+      </select>
     </div>
     <div class="right">
-
       <div class="top">
-        top
+        <h1>トリミング位置</h1>
+        <canvas id="cropCanvas"></canvas>
       </div>
       <div class="bottom">
-        bottom
+        <h1>出力画像プレビュー</h1>
+        <canvas id="outputPreviewCanvas"></canvas>
       </div>
-
     </div>
   </div>
 </body>
