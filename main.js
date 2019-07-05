@@ -2,6 +2,7 @@
 const electron = require('electron');
 const {app} = electron;
 const {BrowserWindow} = electron; //ウィンドウを表す[BrowserWindow]はelectronモジュールに含まれている
+const {Menu} = electron; //ウィンドウを表す[BrowserWindow]はelectronモジュールに含まれている
 
 // 新しいウィンドウ(Webページ)を生成
 let win;
@@ -17,6 +18,33 @@ function createWindow() {
     win = null;
   });
 }
+
+// アプリケーションメニュー設定
+var menu = Menu.buildFromTemplate([
+  {
+    label: 'Sample',
+    submenu: [
+      {label: 'About'},
+      {label: 'Quit'}
+    ]
+  },
+  {
+    label: 'File',
+    submenu: [
+      {label: 'New File'},
+      {label: 'Paste'}
+    ]
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {label: 'Copy', accelerator: 'Command+C', selector: 'copy'},
+      {label: 'Paste', accelerator: 'Command+V', selector: 'paste'}
+    ]
+  }
+]);
+Menu.setApplicationMenu(menu);
+
 // アプリの準備が整ったらウィンドウを表示
 app.on('ready', createWindow);
 // 全てのウィンドウを閉じたらアプリを終了
