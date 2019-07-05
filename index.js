@@ -29,10 +29,12 @@ imageFileSelect.ondrop = function (event) {
     }
 
     return false;
-};
-const canvas = $('#trimPreviewCanvas')
+}
+
+const canvas = $('#trimPreviewCanvas');
+const ctx = canvas.getContext("2d");
+const focus = $('#focusLayerCanvas');
 imageFileSelect.onchange = (event) => {
-    const ctx = canvas.getContext("2d");
     const img = new Image();
 
     const idx = imageFileSelect.selectedIndex;
@@ -41,6 +43,12 @@ imageFileSelect.onchange = (event) => {
     img.onload = function() {
         const w = this.naturalWidth;
         const h = this.naturalHeight;
+        console.log(`width = ${w}`);
+        console.log(`height = ${h}`);
+        canvas.setAttribute('width', w.toString());
+        canvas.setAttribute('height', h.toString());
+        focus.setAttribute('width', w.toString());
+        focus.setAttribute('height', h.toString());
         ctx.drawImage(img, 0, 0, w, h);
     }
 
