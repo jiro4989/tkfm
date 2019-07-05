@@ -1,5 +1,11 @@
 const $ = (q) => document.querySelector(q);
 
+function removeAllChildren(elem) {
+    while (elem.firstChild) {
+        elem.removeChild(elem.firstChild);
+    }
+}
+
 // documentにドラッグされた場合 / ドロップされた場合
 // ドラッグ＆ドロップイベントを定義する時は事前準備として必要
 document.ondragover = document.ondrop = function (event) {
@@ -14,8 +20,12 @@ imageFileSelect.ondragleave = imageFileSelect.ondragend = () => false;
 imageFileSelect.ondrop = function (event) {
     event.preventDefault(); // イベントの伝搬を止めて、アプリケーションのHTMLとファイルが差し替わらないようにする
 
+    removeAllChildren(imageFileSelect);
     for (let file of event.dataTransfer.files) {
-        console.log(file.name, file.path);
+        let option = document.createElement('option');
+        option.value = file.path;
+        option.text = file.path;
+        imageFileSelect.appendChild(option);
     }
 
     return false;
