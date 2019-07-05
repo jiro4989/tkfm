@@ -22,17 +22,14 @@ function createWindow() {
 // アプリケーションメニュー設定
 var menu = Menu.buildFromTemplate([
   {
-    label: 'Sample',
-    submenu: [
-      {label: 'About'},
-      {label: 'Quit'}
-    ]
-  },
-  {
     label: 'File',
     submenu: [
-      {label: 'New File'},
-      {label: 'Paste'}
+      {
+        label: 'Open files',
+        click: function(item, focusedWindow) {
+          console.log('open file');
+        }
+      },
     ]
   },
   {
