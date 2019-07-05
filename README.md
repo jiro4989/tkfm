@@ -18,3 +18,5 @@ make bc deploy
 deployディレクトリが生成されて、その配下にtkfmというバイナリが生成される。
 
 iupを使っています。
+
+ npm -g i electron electron-packager
