@@ -1,5 +1,1 @@
-/deploy/
-/internal/demo/*/deploy/
-rcc.cpp
-rcc_cgo_linux_linux_amd64.go
-/lib/
+/bin/
