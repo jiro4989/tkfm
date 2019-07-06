@@ -52,22 +52,31 @@ imageFileSelect.onchange = (event) => {
     }
 }
 
+let moveFlag = false;
+const trimWidth = 144;
+const trimHeight = 144;
+
 /**
  * moveFocus はトリミング位置のレイヤーを移動する。
  * 上下左右のレイヤを更新し、トリミング位置だけcanvas描画を消す。
  * @param {*} state 
  */
 function moveFocus(event) {
+    event.preventDefault(); // イベントの伝搬を止めて、アプリケーションのHTMLとファイルが差し替わらないようにする
+    console.log(event);
+
+    if (!moveFlag) return false;
+ 
     const context = focus.getContext("2d");
     context.clearRect(0, 0, focus.width, focus.height);
 
-    const x = event.offsetX;
-    const y = event.offsetY;
+    const x = event.offsetX - trimWidth / 2;
+    const y = event.offsetY - trimHeight / 2;
     const layer = Util.calcLayerRects(
         x,
         y,
-        144, // TODO
-        144, // TODO
+        trimWidth, // TODO
+        trimHeight, // TODO
         focus.width,
         focus.height);
 
@@ -83,10 +92,23 @@ function moveFocus(event) {
     // トリミング位置のcanvas描画を削除
     const foc = layer.focusRect;
     context.clearRect(foc.x, foc.y, foc.width, foc.height);
+    return false;
 }
 
-canvas.ondragover = moveFocus;
-focus.ondragover = moveFocus;
+canvas.onmousedown = function(event) {
+    moveFlag = true;
+}
+canvas.onmouseup = function(event) {
+    moveFlag = false;
+}
+focus.onmousedown = function(event) {
+    moveFlag = true;
+}
+focus.onmouseup = function(event) {
+    moveFlag = false;
+}
+canvas.onmousemove = moveFocus;
+focus.onmousemove = moveFocus;
 
 // //html内の要素取得とリスナーの設定
 // document.querySelector("#openFile").addEventListener('click', () => {
