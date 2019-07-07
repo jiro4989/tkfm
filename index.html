@@ -37,13 +37,32 @@
     }
 
     .top {
-      flex: 2;
+      flex: 1;
       background-color: red;
     }
 
     .bottom {
       height: 300px;
       background-color: green;
+    }
+
+    .image-file-select-root {
+      display: flex;
+    }
+
+    .image-file-select-left {
+      width: 200px;
+    }
+
+    .image-file-select-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .image-file-select-right input,
+    .image-file-select-right div {
+      flex: 1;
     }
   </style>
   <script src="util.js"> </script>
@@ -84,8 +103,20 @@
   <div class="container">
     <div class="left">
       <h1>画像選択</h1>
-      <select name="imageFileSelect" id="imageFileSelect" class="file-select" multiple size="20">
-      </select>
+      <div class="image-file-select-root">
+        <div class="image-file-select-left">
+          <select name="imageFileSelect" id="imageFileSelect" class="file-select" multiple size="20">
+          </select>
+        </div>
+        <div class="image-file-select-right">
+          <input type="button" value="一括挿入" />
+          <input type="button" value="クリア" />
+          <input type="button" value="リストクリア" />
+          <input type="button" value="リスト削除" />
+          <div></div>
+          <div></div>
+        </div>
+      </div>
     </div>
     <div class="right">
       <div class="top">
