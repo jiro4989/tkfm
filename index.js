@@ -55,6 +55,12 @@ imageFileSelect.onchange = (event) => {
 let moveFlag = false;
 const trimWidth = 144;
 const trimHeight = 144;
+let trimRect = {
+    x: 0,
+    y: 0,
+    width: trimWidth,
+    height: trimHeight
+}
 
 /**
  * moveFocus はトリミング位置のレイヤーを移動する。
@@ -66,7 +72,7 @@ function moveFocus(event) {
     console.log(event);
 
     if (!moveFlag) return false;
- 
+
     const context = focus.getContext("2d");
     context.clearRect(0, 0, focus.width, focus.height);
 
@@ -92,23 +98,24 @@ function moveFocus(event) {
     // トリミング位置のcanvas描画を削除
     const foc = layer.focusRect;
     context.clearRect(foc.x, foc.y, foc.width, foc.height);
+    trimRect = foc;
     return false;
 }
 
-canvas.onmousedown = function(event) {
+canvas.onmousedown = focus.onmousedown = function (event) {
     moveFlag = true;
 }
-canvas.onmouseup = function(event) {
-    moveFlag = false;
-}
-focus.onmousedown = function(event) {
-    moveFlag = true;
-}
-focus.onmouseup = function(event) {
+canvas.onmouseup = focus.onmouseup = function (event) {
     moveFlag = false;
 }
 canvas.onmousemove = moveFocus;
 focus.onmousemove = moveFocus;
+
+const outputCanvas = $('#outputPreviewCanvas');
+outputCanvas.onclick = function (event) {
+    console.log("onclick");
+    // クリックした位置を判定してトリミングした画像を貼り付ける。
+}
 
 // //html内の要素取得とリスナーの設定
 // document.querySelector("#openFile").addEventListener('click', () => {
