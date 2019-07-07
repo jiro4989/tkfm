@@ -113,8 +113,23 @@ focus.onmousemove = moveFocus;
 
 const outputCanvas = $('#outputPreviewCanvas');
 outputCanvas.onclick = function (event) {
-    console.log("onclick");
     // クリックした位置を判定してトリミングした画像を貼り付ける。
+    console.log("onclick");
+
+    const {
+        x,
+        y,
+        w,
+        h
+    } = trimRect;
+    const img = new Image();
+    const idx = imageFileSelect.selectedIndex;
+    const path = imageFileSelect.children[idx].value;
+    img.src = path;
+    img.onload = function () {
+        const ctx2 = outputCanvas.getContext('2d');
+        ctx2.drawImage(img, 0, 0, 144, 144);
+    }
 }
 
 // //html内の要素取得とリスナーの設定
