@@ -1,19 +1,66 @@
 {
   "name": "tkfm",
-  "version": "1.0.0",
-  "description": "tkool facetile maker",
-  "main": "main.js",
+  "homepage": "./",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@kenshooui/react-multi-select": "^1.1.5",
+    "electron": "^6.0.7",
+    "electron-packager": "^14.0.5",
+    "foreman": "^3.0.1",
+    "rc-input-number": "^4.5.0",
+    "rc-slider": "^8.7.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-dropzone": "^10.1.8",
+    "react-image-crop": "^8.3.0",
+    "react-scripts": "3.1.1",
+    "sharp": "^0.23.0"
+  },
+  "main": "src/electron-starter.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "electron . --disable-gpu --no-sandbox",
+    "dev": "nf start -p 3000",
+    "package": "electron-packager . tkfm --platform=linux --arc=x64 --out=release",
+    "package-all": "electron-packager . tkfm --platform=all --arc=x64 --out=release",
+    "electron-rebuild": "electron-rebuild"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jiro4989/tkfm.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jiro4989/tkfm/issues"
+  "husky": {
+    "hooks": {}
   },
-  "homepage": "https://github.com/jiro4989/tkfm#readme"
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.6",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.5",
+    "prettier": "^1.18.2"
+  }
 }

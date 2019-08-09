@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  tkfm:
+    build: .
+    env_file: .env
+    tty: true
+    container_name: tkfm
+    volumes:
+      - "/tmp/.X11-unix/:/tmp/.X11-unix"
+      - "$PWD:/work"
+    working_dir: /work
+    entrypoint:
+      # - "xterm"
+      - bash
+      - -c
+      - "npm run build && npm run electron"
