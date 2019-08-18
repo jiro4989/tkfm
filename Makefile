@@ -15,7 +15,7 @@ deploy-demos: $(SRCS)
 		docker run $(DEPLOY_OPT) $(BUILD_SCRIPT) internal/demo/$$d ; \
 	done
 
-# でもアプリを単体デプロイ
+# demoアプリを単体デプロイ
 .PHONY: deploy-demo
 deploy-demo: $(SRCS)
 	if [ -z "$(APP)" ]; then echo Need APP variables; exit 1; fi
