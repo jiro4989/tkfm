@@ -1,14 +1,8 @@
-import React, {Component, useState} from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, {useState} from "react";
 import FileList from "./FileList";
 import CropView from "./CropView";
 import TilePreview from "./TilePreview";
-import TestCrop from "./TestCrop";
 
-// 練習用のコード
-import TestCounter from "./TestCounter";
-import TestTextInput from "./TestTextInput";
 const {ipcRenderer} = window.require("electron");
 
 const files = [
@@ -56,10 +50,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <TestCounter />
-      <TestTextInput />
-      <TestCrop />
-
       <FileList files={files} selectedImageFiles={selectedImageFiles} setSelectedImageFiles={setSelectedImageFiles} />
       <CropView
         image={cropTargetImage}
