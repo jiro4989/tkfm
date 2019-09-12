@@ -70,14 +70,14 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
   const onImageLoaded = image => {
     console.log("onImageLoaded:", image);
     setImageRef(image)
-    setCrop({x: 0, y: 0, width: cropWidth, height: cropHeight});
+    setCrop({x: cropX, y: cropY, width: cropWidth, height: cropHeight});
     return false;
   };
 
   const onCropComplete = (crop, percentCrop) => {
     console.log('onCropComplete');
-    // setCropX(crop.x)
-    // setCropY(crop.y)
+    setCropX(crop.x)
+    setCropY(crop.y)
     makeClientCrop(crop);
   };
 
