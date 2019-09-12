@@ -42,15 +42,17 @@ const App = () => {
     ipcRenderer.removeAllListeners('read-image-file-resp')
   })
 
-  ipcRenderer.on('crop-image-resp', (evt, arg) => {
-    console.log('crop-image-resp', arg)
-    const i = arg.index
-    const blob = new Blob([arg.data], {type: 'application/octet-binary'})
-    const img = URL.createObjectURL(blob)
-    console.log(img)
-    tileImages[i] = img
+  ipcRenderer.on('crop-images-resp', (evt, args) => {
+    console.log('crop-images-resp', args)
+    args.forEach(arg => {
+      const i = arg.index
+      const blob = new Blob([arg.data], {type: 'application/octet-binary'})
+      const img = URL.createObjectURL(blob)
+      console.log(img)
+      tileImages[i] = img
+    });
     setTileImages([...tileImages])
-    ipcRenderer.removeAllListeners('crop-image-resp')
+    ipcRenderer.removeAllListeners('crop-images-resp')
   })
 
   if (0 < selectedImageFiles.length) {
@@ -62,8 +64,7 @@ const App = () => {
 
   const sendCropImage = () => {
     if (0 < selectedImageFiles.length) {
-      for (let i=0; i<selectedImageFiles.length; i++) {
-        const file = selectedImageFiles[i];
+      const args = selectedImageFiles.map((file, i) => {
         const arg = {
           x: cropX,
           y: cropY,
@@ -72,8 +73,9 @@ const App = () => {
           filepath: file.path,
           index: i,
         }
-        ipcRenderer.send('crop-image-req', arg);
-      }
+        return arg
+      })
+      ipcRenderer.send('crop-images-req', args);
     }
   }
 
