@@ -79,10 +79,6 @@ ipcMain.on("crop-images-req", async (evt, args) => {
     return await sharp(arg.filepath)
       .extract({left: arg.x, top: arg.y, width: arg.width, height: arg.height})
       .toBuffer()
-    // .then(data => {
-    //   console.log('data:', data);
-    //   datas.push({index: arg.index, data: data})
-    // })
   }))
   console.log('promise end')
   datas = datas.map((v, i)=> {return {index: i, data: v}})
