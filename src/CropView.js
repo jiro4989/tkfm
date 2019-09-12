@@ -19,10 +19,14 @@ const LabeledInputNumber = ({label, value, onChange, style}) => {
 const CropView = ({image}) => {
   const [imageRef, setImageRef] = useState(null);
   const [croppedImageURL, setCroppedImageURL] = useState(null);
+  const [cropX, setCropX] = useState(0);
+  const [cropY, setCropY] = useState(0);
   const [cropWidth, setCropWidth] = useState(144);
   const [cropHeight, setCropHeight] = useState(144);
   const [scale, setScale] = useState(150);
   const [crop, setCrop] = useState({
+    // x: 0,
+    // y: 0,
     // aspect: 16 / 9,
     // width: cropWidth,
     // height: cropHeight,
@@ -76,11 +80,14 @@ const CropView = ({image}) => {
   };
 
   const onCropComplete = (crop, percentCrop) => {
-    //console.log('onCropComplete', crop, percentCrop);
+    console.log('onCropComplete');
+    setCropX(crop.x)
+    setCropY(crop.y)
     makeClientCrop(crop);
   };
 
   const onCropChange = (crop, percentCrop) => {
+    console.log('onCropChange');
     crop.width = cropWidth;
     crop.height = cropHeight;
     setCrop(crop);
@@ -93,6 +100,18 @@ const CropView = ({image}) => {
   const onDragEnd = () => {
     //console.log('onDragEnd');
   };
+
+  const setCropXAndRedrawCrop = (v) => {
+    setCropX(v);
+    crop.x = v;
+    setCrop(crop);
+  }
+
+  const setCropYAndRedrawCrop = (v) => {
+    setCropY(v);
+    crop.x = v;
+    setCrop(crop);
+  }
 
   const setCropWidthAndRedrawCrop = (v) => {
     setCropWidth(v);
@@ -128,7 +147,11 @@ const CropView = ({image}) => {
         locked={true}
         style={{width: scale + '%', height: 'auto'}}
       />}
+      <LabeledInputNumber value={cropX} onChange={setCropXAndRedrawCrop} style={inputNumberStyle} label={"X"} />
+      <LabeledInputNumber value={cropY} onChange={setCropYAndRedrawCrop} style={inputNumberStyle} label={"Y"} />
       {croppedImageURL && <img alt="Crop" src={croppedImageURL} />}
+      <br />
+      <br />
     </div>
   );
 }
