@@ -16,8 +16,7 @@ const LabeledInputNumber = ({label, value, onChange, style}) => {
   )
 }
 
-const CropView = () => {
-  const [src, setSrc] = useState(null);
+const CropView = ({image}) => {
   const [imageRef, setImageRef] = useState(null);
   const [croppedImageURL, setCroppedImageURL] = useState(null);
   const [cropWidth, setCropWidth] = useState(144);
@@ -28,12 +27,6 @@ const CropView = () => {
     // width: cropWidth,
     // height: cropHeight,
   });
-
-  const loadImage = (evt) => {
-    const file = evt.target.files[0]
-    const dataURL = URL.createObjectURL(file)
-    setSrc(dataURL)
-  }
 
   const getCroppedImg = (image, crop, fileName) => {
     console.log("getCroppedImg:", image);
@@ -117,8 +110,6 @@ const CropView = () => {
     <div>
       <h2>CropView</h2>
       <hr />
-      <input type="file" onChange={(evt) => loadImage(evt)} />
-      <br />
       <LabeledInputNumber value={cropWidth} onChange={setCropWidthAndRedrawCrop} style={inputNumberStyle} label={"Crop width"} />
       <br />
       <LabeledInputNumber value={cropHeight} onChange={setCropHeightAndRedrawCrop} style={inputNumberStyle} label={"Crop height"} />
@@ -126,8 +117,8 @@ const CropView = () => {
       <LabeledInputNumber value={scale} onChange={setScale} style={inputNumberStyle} label={"Crop scale"} />
       <Slider value={scale} onChange={setScale} />
       <br />
-      {src && <ReactCrop
-        src={src}
+      {image && <ReactCrop
+        src={image}
         crop={crop}
         onImageLoaded={onImageLoaded}
         onComplete={onCropComplete}
