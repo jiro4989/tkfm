@@ -1,0 +1,7 @@
+targets:
+  - name: PlantUMLのドキュメントの生成
+    path: doc
+    commands:
+      - [plantuml, -tsvg, doc/*.puml]
+    extensions:
+      - puml
