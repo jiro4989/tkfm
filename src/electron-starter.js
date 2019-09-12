@@ -73,13 +73,13 @@ ipcMain.on("read-image-file-req", (evt, arg) => {
   })
 });
 
-ipcMain.on("test-crop-req", (evt, arg) => {
+ipcMain.on("crop-image-req", (evt, arg) => {
   console.log('test-crop-req:', arg);
   sharp(arg.filepath)
     .resize({width: arg.width, height: arg.height})
     .toBuffer()
     .then(data => {
       console.log('data:', data);
-      evt.sender.send('test-crop-resp', data);
+      evt.sender.send('crop-image-resp', {index: arg.index, data: data});
     })
 });

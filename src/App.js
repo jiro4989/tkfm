@@ -26,6 +26,7 @@ const App = () => {
   const [cropWidth, setCropWidth] = useState(144);
   const [cropHeight, setCropHeight] = useState(144);
   const [scale, setScale] = useState(150);
+  const [tileImages, setTileImages] = useState([null, null, null, null, null, null, null, null]);
 
   console.log('App:', selectedImageFiles)
 
@@ -41,11 +42,37 @@ const App = () => {
     ipcRenderer.removeAllListeners('read-image-file-resp')
   })
 
+  ipcRenderer.on('crop-image-resp', (evt, arg) => {
+    console.log('crop-image-resp', arg)
+    const i = arg.index
+    const blob = new Blob([arg.data], {type: 'application/octet-binary'})
+    const img = URL.createObjectURL(blob)
+    console.log(img)
+    tileImages[i] = img
+    setTileImages([...tileImages])
+    ipcRenderer.removeAllListeners('crop-image-resp')
+  })
+
   if (0 < selectedImageFiles.length) {
     console.log('File request')
     waitResp = true
     const file = selectedImageFiles[0];
     ipcRenderer.send('read-image-file-req', file.path);
+  }
+
+  const sendCropImage = () => {
+    if (0 < selectedImageFiles.length) {
+      for (let i=0; i<selectedImageFiles.length; i++) {
+        const file = selectedImageFiles[i];
+        const arg = {
+          width: cropWidth,
+          height: cropHeight,
+          filepath: file.path,
+          index: i,
+        }
+        ipcRenderer.send('crop-image-req', arg);
+      }
+    }
   }
 
   return (
@@ -55,6 +82,9 @@ const App = () => {
         selectedImageFiles={selectedImageFiles}
         setSelectedImageFiles={setSelectedImageFiles}
       />
+      <button onClick={sendCropImage}>
+        テスト送信
+      </button>
       <CropView
         image={cropTargetImage}
         cropX={cropX}
@@ -68,7 +98,11 @@ const App = () => {
         setCropHeight={setCropHeight}
         setScale={setScale}
       />
-      <TilePreview />
+      <TilePreview
+        tileImages={tileImages}
+        width={cropWidth}
+        height={cropHeight}
+      />
     </div>
   )
 }
