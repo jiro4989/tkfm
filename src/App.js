@@ -65,6 +65,8 @@ const App = () => {
       for (let i=0; i<selectedImageFiles.length; i++) {
         const file = selectedImageFiles[i];
         const arg = {
+          x: cropX,
+          y: cropY,
           width: cropWidth,
           height: cropHeight,
           filepath: file.path,
