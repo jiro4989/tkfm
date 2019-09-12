@@ -50,7 +50,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <FileList files={files} selectedImageFiles={selectedImageFiles} setSelectedImageFiles={setSelectedImageFiles} />
+      <FileList
+        files={files}
+        selectedImageFiles={selectedImageFiles}
+        setSelectedImageFiles={setSelectedImageFiles}
+      />
       <CropView
         image={cropTargetImage}
         cropX={cropX}
