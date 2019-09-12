@@ -16,14 +16,9 @@ const LabeledInputNumber = ({label, value, onChange, style}) => {
   )
 }
 
-const CropView = ({image}) => {
+const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWidth, cropHeight, setCropHeight, scale, setScale}) => {
   const [imageRef, setImageRef] = useState(null);
   const [croppedImageURL, setCroppedImageURL] = useState(null);
-  const [cropX, setCropX] = useState(0);
-  const [cropY, setCropY] = useState(0);
-  const [cropWidth, setCropWidth] = useState(144);
-  const [cropHeight, setCropHeight] = useState(144);
-  const [scale, setScale] = useState(150);
   const [crop, setCrop] = useState({
     // x: 0,
     // y: 0,

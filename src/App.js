@@ -27,6 +27,11 @@ let waitResp = false
 const App = () => {
   const [selectedImageFiles, setSelectedImageFiles] = useState([])
   const [cropTargetImage, setCropTargetImage] = useState(null)
+  const [cropX, setCropX] = useState(0);
+  const [cropY, setCropY] = useState(0);
+  const [cropWidth, setCropWidth] = useState(144);
+  const [cropHeight, setCropHeight] = useState(144);
+  const [scale, setScale] = useState(150);
 
   console.log('App:', selectedImageFiles)
 
@@ -62,7 +67,19 @@ const App = () => {
       <TestCrop />
 
       <FileList files={files} selectedImageFiles={selectedImageFiles} setSelectedImageFiles={setSelectedImageFiles} />
-      <CropView image={cropTargetImage} />
+      <CropView
+        image={cropTargetImage}
+        cropX={cropX}
+        cropY={cropY}
+        cropWidth={cropWidth}
+        cropHeight={cropHeight}
+        scale={scale}
+        setCropX={setCropX}
+        setCropY={setCropY}
+        setCropWidth={setCropWidth}
+        setCropHeight={setCropHeight}
+        setScale={setScale}
+      />
       <TilePreview />
     </div>
   )
