@@ -22,6 +22,8 @@ const files = [
   {id: 7, label: "actor004_l_stand_001_008.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_008.png"},
 ]
 
+let waitResp = false
+
 const App = () => {
   const [selectedImageFiles, setSelectedImageFiles] = useState([])
   const [cropTargetImage, setCropTargetImage] = useState(null)
@@ -31,11 +33,18 @@ const App = () => {
   ipcRenderer.on('read-image-file-resp', (evt, arg) => {
     console.log('read-image-file-resp:', arg)
     const blob = new Blob([arg], {type: 'application/octet-binary'})
-    //setCropTargetImage(URL.createObjectURL(blob))
+    const img = URL.createObjectURL(blob)
+    if (!waitResp) return;
+    waitResp = false;
+    console.log('OK')
+    // if (Object.is(img, cropTargetImage)) return;
+    setCropTargetImage(img)
+    ipcRenderer.removeAllListeners('read-image-file-resp')
   })
 
   if (0 < selectedImageFiles.length) {
     console.log('File request')
+    waitResp = true
     const file = selectedImageFiles[0];
     ipcRenderer.send('read-image-file-req', file.path);
   }
