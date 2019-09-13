@@ -62,7 +62,7 @@ const App = () => {
     ipcRenderer.send('read-image-file-req', file.path);
   }
 
-  const sendCropImage = () => {
+  const bulkInsert = () => {
     if (0 < selectedImageFiles.length) {
       const args = selectedImageFiles.map((file, i) => {
         const arg = {
@@ -85,10 +85,8 @@ const App = () => {
         files={files}
         selectedImageFiles={selectedImageFiles}
         setSelectedImageFiles={setSelectedImageFiles}
+        bulkInsert={bulkInsert}
       />
-      <button onClick={sendCropImage}>
-        テスト送信
-      </button>
       <CropView
         image={cropTargetImage}
         cropX={cropX}
