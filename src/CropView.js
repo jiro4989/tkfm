@@ -5,6 +5,21 @@ import InputNumber from 'rc-input-number';
 import 'rc-input-number/assets/index.css';
 import Slider, {Range} from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import {Paper, Typography} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  btn: {
+    height: 40,
+    width: '100%',
+  },
+  paper: {
+    padding: theme.spacing(2),
+  },
+}));
 
 const inputNumberStyle = {width: 80}
 const LabeledInputNumber = ({label, value, onChange, style}) => {
@@ -17,6 +32,8 @@ const LabeledInputNumber = ({label, value, onChange, style}) => {
 }
 
 const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWidth, cropHeight, setCropHeight, scale, setScale}) => {
+  const classes = useStyles();
+
   const [imageRef, setImageRef] = useState(null);
   const [croppedImageURL, setCroppedImageURL] = useState(null);
   const [crop, setCrop] = useState({
@@ -121,9 +138,12 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
   }
 
   return (
-    <div>
-      <h2>CropView</h2>
+    <Paper className={classes.paper}>
+      <Typography variant="h3" component="h3">
+        Crop view
+      </Typography>
       <hr />
+
       <LabeledInputNumber value={cropWidth} onChange={setCropWidthAndRedrawCrop} style={inputNumberStyle} label={"Crop width"} />
       <br />
       <LabeledInputNumber value={cropHeight} onChange={setCropHeightAndRedrawCrop} style={inputNumberStyle} label={"Crop height"} />
@@ -147,7 +167,7 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
       {croppedImageURL && <img alt="Crop" src={croppedImageURL} />}
       <br />
       <br />
-    </div>
+    </Paper>
   );
 }
 export default CropView;
