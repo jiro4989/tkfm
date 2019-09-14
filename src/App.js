@@ -3,15 +3,33 @@ import FileList from "./FileList";
 import CropView from "./CropView";
 import TilePreview from "./TilePreview";
 
+import {Grid} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+
 // const remote = require('remote');
 // const dialog = require('electron').remote.dialog;
 // const BrowserWindow = remote.require('browser-window');
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  btn: {
+    height: 40,
+    width: '100%',
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+}));
 
 const {ipcRenderer} = window.require("electron");
 
 let waitResp = false
 
 const App = () => {
+  const classes = useStyles();
+
   const [selectedImageFiles, setSelectedImageFiles] = useState([])
   const [cropTargetImage, setCropTargetImage] = useState(null)
   const [cropX, setCropX] = useState(0);
@@ -90,30 +108,42 @@ const App = () => {
 
   return (
     <div className="App">
-      <FileList
-        files={listItems}
-        selectedImageFiles={selectedImageFiles}
-        setSelectedImageFiles={setSelectedImageFiles}
-        bulkInsert={bulkInsert}
-      />
-      <CropView
-        image={cropTargetImage}
-        cropX={cropX}
-        cropY={cropY}
-        cropWidth={cropWidth}
-        cropHeight={cropHeight}
-        scale={scale}
-        setCropX={setCropX}
-        setCropY={setCropY}
-        setCropWidth={setCropWidth}
-        setCropHeight={setCropHeight}
-        setScale={setScale}
-      />
-      <TilePreview
-        tileImages={tileImages}
-        width={cropWidth}
-        height={cropHeight}
-      />
+      <Grid container className={classes.root} spacing={2}>
+        <Grid item xs={5}>
+          <FileList
+            files={listItems}
+            selectedImageFiles={selectedImageFiles}
+            setSelectedImageFiles={setSelectedImageFiles}
+            bulkInsert={bulkInsert}
+          />
+        </Grid>
+        <Grid item xs={7}>
+          <Grid container>
+            <Grid item xs={12}>
+              <CropView
+                image={cropTargetImage}
+                cropX={cropX}
+                cropY={cropY}
+                cropWidth={cropWidth}
+                cropHeight={cropHeight}
+                scale={scale}
+                setCropX={setCropX}
+                setCropY={setCropY}
+                setCropWidth={setCropWidth}
+                setCropHeight={setCropHeight}
+                setScale={setScale}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TilePreview
+                tileImages={tileImages}
+                width={cropWidth}
+                height={cropHeight}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </div>
   )
 }
