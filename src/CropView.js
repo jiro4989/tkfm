@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
+    width: 60,
   },
 }));
 
@@ -109,28 +109,36 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
   };
 
   const setCropXAndRedrawCrop = (v) => {
-    setCropX(v);
-    crop.x = v;
+    setCropX(v.target.value);
+    crop.x = v.target.value;
     setCrop(crop);
   }
 
   const setCropYAndRedrawCrop = (v) => {
-    setCropY(v);
-    crop.y = v;
+    setCropY(v.target.value);
+    crop.y = v.target.value;
     setCrop(crop);
   }
 
   const setCropWidthAndRedrawCrop = (v) => {
-    setCropWidth(v);
-    crop.width = v;
+    setCropWidth(v.target.value);
+    crop.width = v.target.value;
     setCrop(crop);
   }
 
   const setCropHeightAndRedrawCrop = (v) => {
-    setCropHeight(v);
-    crop.height = v;
+    setCropHeight(v.target.value);
+    crop.height = v.target.value;
     setCrop(crop);
   }
+
+  const buttons = [
+    {label: "X", value: cropX, onChange: setCropXAndRedrawCrop},
+    {label: "Y", value: cropY, onChange: setCropYAndRedrawCrop},
+    {label: "Width", value: cropWidth, onChange: setCropWidthAndRedrawCrop},
+    {label: "Height", value: cropHeight, onChange: setCropHeightAndRedrawCrop},
+    {label: "Scale", value: scale, onChange: setScale},
+  ]
 
   return (
     <Paper className={classes.paper}>
@@ -139,38 +147,6 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
       </Typography>
       <hr />
 
-      <TextField
-        label="Width"
-        value={cropWidth}
-        onChange={setCropWidthAndRedrawCrop}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{shrink: true}}
-        margin="normal"
-      />
-
-      <TextField
-        label="Height"
-        value={cropHeight}
-        onChange={setCropHeightAndRedrawCrop}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{shrink: true}}
-        margin="normal"
-      />
-
-      <TextField
-        label="Scale"
-        value={scale}
-        onChange={setScale}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{shrink: true}}
-        margin="normal"
-      />
-
-      <Slider value={scale} onChange={setScale} />
-      <br />
       {image && <ReactCrop
         src={image}
         crop={crop}
@@ -183,25 +159,21 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
         style={{width: scale + '%', height: 'auto'}}
       />}
 
-      <TextField
-        label="X"
-        value={cropX}
-        onChange={setCropXAndRedrawCrop}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{shrink: true}}
-        margin="normal"
-      />
-
-      <TextField
-        label="Y"
-        value={cropY}
-        onChange={setCropYAndRedrawCrop}
-        type="number"
-        className={classes.textField}
-        InputLabelProps={{shrink: true}}
-        margin="normal"
-      />
+      {buttons.map(v => {
+        return (
+          <TextField
+            key={v.label}
+            label={v.label}
+            value={v.value}
+            onChange={v.onChange}
+            type="number"
+            className={classes.textField}
+            InputLabelProps={{shrink: true}}
+            margin="normal"
+          />
+        )
+      })}
+      <Slider value={scale} onChange={setScale} />
 
       {croppedImageURL && <img alt="Crop" src={croppedImageURL} />}
       <br />
