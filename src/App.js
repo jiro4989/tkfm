@@ -9,17 +9,6 @@ import TilePreview from "./TilePreview";
 
 const {ipcRenderer} = window.require("electron");
 
-const files = [
-  {id: 0, label: "actor004_l_stand_001_001.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_001.png"},
-  {id: 1, label: "actor004_l_stand_001_002.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_002.png"},
-  {id: 2, label: "actor004_l_stand_001_003.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_003.png"},
-  {id: 3, label: "actor004_l_stand_001_004.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_004.png"},
-  {id: 4, label: "actor004_l_stand_001_005.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_005.png"},
-  {id: 5, label: "actor004_l_stand_001_006.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_006.png"},
-  {id: 6, label: "actor004_l_stand_001_007.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_007.png"},
-  {id: 7, label: "actor004_l_stand_001_008.png", path: "testdata/actor004/stand/left/actor004_l_stand_001_008.png"},
-]
-
 let waitResp = false
 
 const App = () => {
@@ -37,11 +26,12 @@ const App = () => {
 
   ipcRenderer.on('add-list-item-req', (evt, files) => {
     console.log('add-list-item-req', files)
-    const cnt = files.length;
+    const cnt = listItems.length;
     const f = files.map((item, i) => {return {id: i + cnt, label: item.label, path: item.path}})
-    files.push(f)
-    setListItems([...files])
+    f.forEach(v => listItems.push(v))
+    setListItems([...listItems])
     ipcRenderer.removeAllListeners('add-list-item-req')
+    evt.sender.send('add-list-item-resp', 'ping');
   })
 
   ipcRenderer.on('read-image-file-resp', (evt, arg) => {
@@ -101,7 +91,7 @@ const App = () => {
   return (
     <div className="App">
       <FileList
-        files={files}
+        files={listItems}
         selectedImageFiles={selectedImageFiles}
         setSelectedImageFiles={setSelectedImageFiles}
         bulkInsert={bulkInsert}
