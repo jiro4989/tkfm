@@ -174,10 +174,6 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
         )
       })}
       <Slider value={scale} onChange={setScale} />
-
-      {croppedImageURL && <img alt="Crop" src={croppedImageURL} />}
-      <br />
-      <br />
     </Paper>
   );
 }
