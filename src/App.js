@@ -3,6 +3,10 @@ import FileList from "./FileList";
 import CropView from "./CropView";
 import TilePreview from "./TilePreview";
 
+// const remote = require('remote');
+// const dialog = require('electron').remote.dialog;
+// const BrowserWindow = remote.require('browser-window');
+
 const {ipcRenderer} = window.require("electron");
 
 const files = [
@@ -27,8 +31,18 @@ const App = () => {
   const [cropHeight, setCropHeight] = useState(144);
   const [scale, setScale] = useState(150);
   const [tileImages, setTileImages] = useState([null, null, null, null, null, null, null, null]);
+  const [listItems, setListItems] = useState([])
 
   console.log('App:', selectedImageFiles)
+
+  ipcRenderer.on('add-list-item-req', (evt, files) => {
+    console.log('add-list-item-req', files)
+    const cnt = files.length;
+    const f = files.map((item, i) => {return {id: i + cnt, label: item.label, path: item.path}})
+    files.push(f)
+    setListItems([...files])
+    ipcRenderer.removeAllListeners('add-list-item-req')
+  })
 
   ipcRenderer.on('read-image-file-resp', (evt, arg) => {
     console.log('read-image-file-resp:', arg)
@@ -77,6 +91,11 @@ const App = () => {
       })
       ipcRenderer.send('crop-images-req', args);
     }
+  }
+
+  const deleteListItem = () => {}
+  const clearList = () => {
+
   }
 
   return (
