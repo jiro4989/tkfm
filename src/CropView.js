@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import InputNumber from 'rc-input-number';
-import 'rc-input-number/assets/index.css';
 import Slider, {Range} from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import {Paper, Typography} from '@material-ui/core';
+import {Paper, Typography, TextField} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -19,17 +17,14 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
   },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
 }));
 
 const inputNumberStyle = {width: 80}
-const LabeledInputNumber = ({label, value, onChange, style}) => {
-  return (
-    <label>
-      {label}:
-      <InputNumber value={value} style={style} onChange={onChange} />
-    </label>
-  )
-}
 
 const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWidth, cropHeight, setCropHeight, scale, setScale}) => {
   const classes = useStyles();
@@ -144,11 +139,36 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
       </Typography>
       <hr />
 
-      <LabeledInputNumber value={cropWidth} onChange={setCropWidthAndRedrawCrop} style={inputNumberStyle} label={"Crop width"} />
-      <br />
-      <LabeledInputNumber value={cropHeight} onChange={setCropHeightAndRedrawCrop} style={inputNumberStyle} label={"Crop height"} />
-      <br />
-      <LabeledInputNumber value={scale} onChange={setScale} style={inputNumberStyle} label={"Crop scale"} />
+      <TextField
+        label="Width"
+        value={cropWidth}
+        onChange={setCropWidthAndRedrawCrop}
+        type="number"
+        className={classes.textField}
+        InputLabelProps={{shrink: true}}
+        margin="normal"
+      />
+
+      <TextField
+        label="Height"
+        value={cropHeight}
+        onChange={setCropHeightAndRedrawCrop}
+        type="number"
+        className={classes.textField}
+        InputLabelProps={{shrink: true}}
+        margin="normal"
+      />
+
+      <TextField
+        label="Scale"
+        value={scale}
+        onChange={setScale}
+        type="number"
+        className={classes.textField}
+        InputLabelProps={{shrink: true}}
+        margin="normal"
+      />
+
       <Slider value={scale} onChange={setScale} />
       <br />
       {image && <ReactCrop
@@ -162,8 +182,27 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
         locked={true}
         style={{width: scale + '%', height: 'auto'}}
       />}
-      <LabeledInputNumber value={cropX} onChange={setCropXAndRedrawCrop} style={inputNumberStyle} label={"X"} />
-      <LabeledInputNumber value={cropY} onChange={setCropYAndRedrawCrop} style={inputNumberStyle} label={"Y"} />
+
+      <TextField
+        label="X"
+        value={cropX}
+        onChange={setCropXAndRedrawCrop}
+        type="number"
+        className={classes.textField}
+        InputLabelProps={{shrink: true}}
+        margin="normal"
+      />
+
+      <TextField
+        label="Y"
+        value={cropY}
+        onChange={setCropYAndRedrawCrop}
+        type="number"
+        className={classes.textField}
+        InputLabelProps={{shrink: true}}
+        margin="normal"
+      />
+
       {croppedImageURL && <img alt="Crop" src={croppedImageURL} />}
       <br />
       <br />
