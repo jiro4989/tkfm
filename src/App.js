@@ -37,8 +37,11 @@ const App = () => {
   const [cropWidth, setCropWidth] = useState(144);
   const [cropHeight, setCropHeight] = useState(144);
   const [scale, setScale] = useState(150);
-  const [tileImages, setTileImages] = useState([null, null, null, null, null, null, null, null]);
   const [listItems, setListItems] = useState([])
+  const [tileColumn, setTileColumn] = useState(4);
+  const [tileRow, setTileRow] = useState(2);
+  // FIXME 変更すると落ちる
+  const [tileImages, setTileImages] = useState(Array.from(new Array(tileColumn * tileRow)).map(v => null));
 
   ipcRenderer.on('add-list-item-req', (evt, files) => {
     console.log('add-list-item-req', files)
@@ -132,6 +135,10 @@ const App = () => {
                 tileImages={tileImages}
                 width={cropWidth}
                 height={cropHeight}
+                tileRow={tileRow}
+                tileColumn={tileColumn}
+                setTileRow={setTileRow}
+                setTileColumn={setTileColumn}
               />
             </Grid>
           </Grid>
