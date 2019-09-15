@@ -6,8 +6,6 @@
   "dependencies": {
     "@kenshooui/react-multi-select": "^1.1.5",
     "@material-ui/core": "^4.4.2",
-    "electron": "^6.0.7",
-    "electron-packager": "^14.0.5",
     "foreman": "^3.0.1",
     "rc-input-number": "^4.5.0",
     "rc-slider": "^8.7.1",
@@ -16,7 +14,6 @@
     "react-dom": "^16.9.0",
     "react-dropzone": "^10.1.8",
     "react-image-crop": "^8.3.0",
-    "react-scripts": "3.1.1",
     "react-scroll": "^1.7.14",
     "react-scrollbar": "^0.5.6",
     "sharp": "^0.23.0"
@@ -24,13 +21,13 @@
   "main": "src/electron-starter.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron . --disable-gpu --no-sandbox",
     "dev": "nf start -p 3000",
     "package": "electron-packager . tkfm --platform=linux --arc=x64 --out=release",
-    "package-all": "electron-packager . tkfm --platform=all --arc=x64 --out=release",
+    "package-all": "electron-packager . tkfm --platform=linux,darwin,win32 --arc=x64 --out=release",
     "electron-rebuild": "electron-rebuild"
   },
   "eslintConfig": {
@@ -58,6 +55,8 @@
     ]
   },
   "devDependencies": {
+    "electron": "^6.0.7",
+    "electron-packager": "^14.0.5",
     "electron-rebuild": "^1.8.6",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.1.0",
@@ -65,6 +64,7 @@
     "eslint-plugin-react": "^7.14.3",
     "husky": "^3.0.4",
     "lint-staged": "^9.2.5",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "react-scripts": "3.1.1"
   }
 }

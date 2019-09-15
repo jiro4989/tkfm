@@ -7,9 +7,30 @@ node_js:
 
 cache: npm
 
+addons:
+  apt:
+    packages:
+      - wine
+
 install:
   - npm i
 
 script:
-  - npm build
-  - npm run package
+  - npm run build
+  - npm run package-all
+
+before_deploy:
+  - ./archive.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: Kyz0oEGDKTdSN8iORp68Vt5PyHgw/O5KmkTKRI6EibneUtszENLagcynfoOXiPy4anaXeKMgERy1lDcN92EdVHgCX05H8M6UP2DqKpvR556neVjEG86x2kKRw7km1wVkQ1BPovnLAA8JHYTbW5kn8xzjYsAKLptZRRkC9eRdWzdhS8pduLD1St2Z1OTHN9tMhg4m3xPmzuCam5C0bTh0DCoiYNIEoIPYDJk9QL3TVD2SY56XcofuNBBUafSskvY6zs5n+joP8ZymQGBmITdALchHK3DD6JkU5XApE5J5+0mD+Q3uurVe3FfGfkY1UQMRIAgdAB19coEqejYenL6gJu4wBxP7ceSbVRq5F8/CuEVIxjR8rGMzzLzx4e/1l8FOFn2OnMKYvQ/nl98dwVS4TvTiq+oEImnNtGBRBUcY3o2W4WBt/j+rOjAuVduJic7ap+wo25AhUEpj5uLMqwk1ijteUVmMk0GDV+QKdVhWzVWaXZR47E76lDv5lAuG0mbgYO04L75f0m5AxZLmx0zHlH5lryhYcUO/5raap7B2ehahjR6/pg6BsCYkUUdN6pg7+QFCsP9fbN8lKTaApQZxMSu4AzJoppFZTl4IED71dr+fcp4xBcZp563jhXw62QGDEXaT4PUI2MBI2fkTE/1BlNvHDBQ9SQVcj1xiBfCSxlk=
+  keep-history: false
+  skip_cleanup: true
+  file:
+    - 'release/*.tar.gz'
+    - 'release/*.zip'
+  file_glob: true
+  on:
+    tags: true
