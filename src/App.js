@@ -40,8 +40,6 @@ const App = () => {
   const [tileImages, setTileImages] = useState([null, null, null, null, null, null, null, null]);
   const [listItems, setListItems] = useState([])
 
-  console.log('App:', selectedImageFiles)
-
   ipcRenderer.on('add-list-item-req', (evt, files) => {
     console.log('add-list-item-req', files)
     const cnt = listItems.length;
@@ -53,24 +51,20 @@ const App = () => {
   })
 
   ipcRenderer.on('read-image-file-resp', (evt, arg) => {
-    console.log('read-image-file-resp:', arg)
     const blob = new Blob([arg], {type: 'application/octet-binary'})
     const img = URL.createObjectURL(blob)
     if (!waitResp) return;
     waitResp = false;
-    console.log('OK')
     // if (Object.is(img, cropTargetImage)) return;
     setCropTargetImage(img)
     ipcRenderer.removeAllListeners('read-image-file-resp')
   })
 
   ipcRenderer.on('crop-images-resp', (evt, args) => {
-    console.log('crop-images-resp', args)
     args.forEach(arg => {
       const i = arg.index
       const blob = new Blob([arg.data], {type: 'application/octet-binary'})
       const img = URL.createObjectURL(blob)
-      console.log(img)
       tileImages[i] = img
     });
     setTileImages([...tileImages])
@@ -78,7 +72,6 @@ const App = () => {
   })
 
   if (0 < selectedImageFiles.length) {
-    console.log('File request')
     waitResp = true
     const file = selectedImageFiles[0];
     ipcRenderer.send('read-image-file-req', file.path);

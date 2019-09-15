@@ -6,6 +6,8 @@ import 'rc-slider/assets/index.css';
 import {Paper, Typography, TextField} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
+import {Scrollbars} from 'react-custom-scrollbars';
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -40,7 +42,6 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
   });
 
   const getCroppedImg = (image, crop, fileName) => {
-    console.log("getCroppedImg:", image);
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
@@ -80,32 +81,27 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
   }
 
   const onImageLoaded = image => {
-    console.log("onImageLoaded:", image);
     setImageRef(image)
     setCrop({x: cropX, y: cropY, width: cropWidth, height: cropHeight});
     return false;
   };
 
   const onCropComplete = (crop, percentCrop) => {
-    console.log('onCropComplete');
     setCropX(crop.x)
     setCropY(crop.y)
     makeClientCrop(crop);
   };
 
   const onCropChange = (crop, percentCrop) => {
-    console.log('onCropChange');
     crop.width = cropWidth;
     crop.height = cropHeight;
     setCrop(crop);
   };
 
   const onDragStart = () => {
-    //console.log('onDragStart');
   };
 
   const onDragEnd = () => {
-    //console.log('onDragEnd');
   };
 
   const setCropXAndRedrawCrop = (v) => {
@@ -147,17 +143,19 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
       </Typography>
       <hr />
 
-      {image && <ReactCrop
-        src={image}
-        crop={crop}
-        onImageLoaded={onImageLoaded}
-        onComplete={onCropComplete}
-        onChange={onCropChange}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        locked={true}
-        style={{width: scale + '%', height: 'auto'}}
-      />}
+      <Scrollbars style={{width: 500, height: 300}}>
+        {image && <ReactCrop
+          src={image}
+          crop={crop}
+          onImageLoaded={onImageLoaded}
+          onComplete={onCropComplete}
+          onChange={onCropChange}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          locked={true}
+          style={{width: scale + '%', height: 'auto'}}
+        />}
+      </Scrollbars>
 
       {buttons.map(v => {
         return (
