@@ -13,12 +13,10 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    padding: theme.spacing(2),
   },
-  btn: {
-    height: 40,
-    width: '100%',
-  },
-  control: {
+  right: {
+    flexGrow: 1,
     padding: theme.spacing(2),
   },
 }));
@@ -114,7 +112,7 @@ const App = () => {
           />
         </Grid>
         <Grid item xs={7}>
-          <Grid container>
+          <Grid container className={classes.right}>
             <Grid item xs={12}>
               <CropView
                 image={cropTargetImage}
