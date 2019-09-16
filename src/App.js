@@ -41,37 +41,46 @@ const App = () => {
   // FIXME 変更すると落ちる
   const [tileImages, setTileImages] = useState(Array.from(new Array(tileColumn * tileRow)).map(v => null));
 
-  ipcRenderer.on('add-list-item-req', (evt, files) => {
-    console.log('add-list-item-req', files)
-    const cnt = listItems.length;
-    const f = files.map((item, i) => {return {id: i + cnt, label: item.label, path: item.path}})
-    f.forEach(v => listItems.push(v))
-    setListItems([...listItems])
-    ipcRenderer.removeAllListeners('add-list-item-req')
-    evt.sender.send('add-list-item-resp', 'ping');
-  })
+  if (!ipcRenderer._events['add-list-item-req']) {
+    console.log('SET: add-list-item-req')
+    ipcRenderer.on('add-list-item-req', (evt, files) => {
+      console.log('add-list-item-req', files)
+      const cnt = listItems.length;
+      const f = files.map((item, i) => {return {id: i + cnt, label: item.label, path: item.path}})
+      f.forEach(v => listItems.push(v))
+      setListItems([...listItems])
+      ipcRenderer.removeAllListeners('add-list-item-req')
+      evt.sender.send('add-list-item-resp', 'ping');
+    })
+  }
 
-  ipcRenderer.on('read-image-file-resp', (evt, arg) => {
-    const blob = new Blob([arg], {type: 'application/octet-binary'})
-    const img = URL.createObjectURL(blob)
-    if (!waitResp) return;
-    waitResp = false;
-    // if (Object.is(img, cropTargetImage)) return;
-    setCropTargetImage(img)
-    ipcRenderer.removeAllListeners('read-image-file-resp')
-  })
-
-  ipcRenderer.on('crop-images-resp', (evt, args) => {
-    console.log(args)
-    args.forEach(arg => {
-      const i = arg.index
-      const blob = new Blob([arg.data], {type: 'application/octet-binary'})
+  if (!ipcRenderer._events['read-image-file-resp']) {
+    console.log('SET: read-image-file-resp')
+    ipcRenderer.on('read-image-file-resp', (evt, arg) => {
+      const blob = new Blob([arg], {type: 'application/octet-binary'})
       const img = URL.createObjectURL(blob)
-      tileImages[i] = img
-    });
-    setTileImages([...tileImages])
-    ipcRenderer.removeAllListeners('crop-images-resp')
-  })
+      if (!waitResp) return;
+      waitResp = false;
+      // if (Object.is(img, cropTargetImage)) return;
+      setCropTargetImage(img)
+      ipcRenderer.removeAllListeners('read-image-file-resp')
+    })
+  }
+
+  if (!ipcRenderer._events['crop-images-resp']) {
+    console.log('SET: crop-images-resp')
+    ipcRenderer.on('crop-images-resp', (evt, args) => {
+      console.log(args)
+      args.forEach(arg => {
+        const i = arg.index
+        const blob = new Blob([arg.data], {type: 'application/octet-binary'})
+        const img = URL.createObjectURL(blob)
+        tileImages[i] = img
+      });
+      setTileImages([...tileImages])
+      ipcRenderer.removeAllListeners('crop-images-resp')
+    })
+  }
 
   if (0 < selectedImageFiles.length) {
     waitResp = true
