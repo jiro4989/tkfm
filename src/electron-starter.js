@@ -2,7 +2,7 @@ const {app, Menu, BrowserWindow, ipcMain} = require("electron");
 const path = require("path");
 const url = require("url");
 const fs = require("fs");
-const sharp = require('sharp');
+const Jimp = require("jimp");
 
 const {dialog} = require('electron')
 
@@ -77,11 +77,14 @@ ipcMain.on("read-image-file-req", (evt, arg) => {
 });
 
 ipcMain.on("crop-images-req", async (evt, args) => {
-  console.log('test-crop-req:', args);
+  console.log('crop-images-req', args);
   let datas = await Promise.all(args.map(async arg => {
-    return await sharp(arg.filepath)
-      .extract({left: arg.x, top: arg.y, width: arg.width, height: arg.height})
-      .toBuffer()
+    const image = await Jimp.read(arg.filepath)
+    // TODO
+    // image.scale(scale)
+    const ret = await image.crop(arg.x, arg.y, arg.width, arg.height).getBufferAsync(Jimp.MIME_PNG)
+    console.log(ret)
+    return ret
   }))
   console.log('promise end')
   datas = datas.map((v, i) => {return {index: i, data: v}})

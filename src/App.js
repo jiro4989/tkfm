@@ -62,6 +62,7 @@ const App = () => {
   })
 
   ipcRenderer.on('crop-images-resp', (evt, args) => {
+    console.log(args)
     args.forEach(arg => {
       const i = arg.index
       const blob = new Blob([arg.data], {type: 'application/octet-binary'})
