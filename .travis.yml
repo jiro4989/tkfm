@@ -16,6 +16,7 @@ install:
   - npm i
 
 script:
+  - npm run electron-rebuild
   - npm run build
   - npm run package-all
 
