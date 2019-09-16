@@ -21,14 +21,14 @@
   "main": "src/electron-starter.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron . --disable-gpu --no-sandbox",
     "dev": "nf start -p 3000",
-    "package": "electron-packager . tkfm --platform=linux --arc=x64 --out=release",
+    "package": "electron-packager . tkfm --arc=x64 --out=release",
     "package-all": "electron-packager . tkfm --platform=linux,darwin,win32 --arc=x64 --out=release",
-    "electron-rebuild": "electron-rebuild"
+    "electron-rebuild": "electron-rebuild --arch=x64"
   },
   "eslintConfig": {
     "extends": "react-app"

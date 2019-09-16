@@ -1,26 +1,29 @@
 language: node_js
 
 node_js:
-  - '8'
-  - '10'
   - '12'
 
-cache: npm
+env:
+  - CI=false
 
-addons:
-  apt:
-    packages:
-      - wine
+matrix:
+  include:
+    - os: linux
+    - os: osx
+    - os: windows
+
+cache: npm
 
 install:
   - npm i
 
 script:
+  - npm run electron-rebuild
   - npm run build
-  - npm run package-all
+  - npm run package
 
 before_deploy:
-  - ./archive.sh
+  - node archive.js
 
 deploy:
   provider: releases
