@@ -143,7 +143,7 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
       </Typography>
       <hr />
 
-      <Scrollbars style={{width: 500, height: 300}}>
+      <Scrollbars style={ imageRef ? {width: imageRef.naturalWidth, height: 300} : {width: 500, height: 300} }>
         {image && <ReactCrop
           src={image}
           crop={crop}
@@ -153,7 +153,7 @@ const CropView = ({image, cropX, setCropX, cropY, setCropY, cropWidth, setCropWi
           onDragStart={onDragStart}
           onDragEnd={onDragEnd}
           locked={true}
-          style={{width: scale + '%', height: 'auto'}}
+          style={{width: `${scale}%`, height: 'auto'}}
         />}
       </Scrollbars>
 

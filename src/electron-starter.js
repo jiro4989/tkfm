@@ -80,10 +80,10 @@ ipcMain.on("crop-images-req", async (evt, args) => {
   console.log('crop-images-req', args);
   let datas = await Promise.all(args.map(async arg => {
     const image = await Jimp.read(arg.filepath)
-    // TODO
-    // image.scale(scale)
-    const ret = await image.crop(arg.x, arg.y, arg.width, arg.height).getBufferAsync(Jimp.MIME_PNG)
-    console.log(ret)
+    const ret = await image
+      .scale(arg.scale / 100, Jimp.RESIZE_BEZIER)
+      .crop(arg.x, arg.y, arg.width, arg.height)
+      .getBufferAsync(Jimp.MIME_PNG)
     return ret
   }))
   console.log('promise end')

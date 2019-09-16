@@ -34,7 +34,7 @@ const App = () => {
   const [cropY, setCropY] = useState(0);
   const [cropWidth, setCropWidth] = useState(144);
   const [cropHeight, setCropHeight] = useState(144);
-  const [scale, setScale] = useState(150);
+  const [scale, setScale] = useState(100);
   const [listItems, setListItems] = useState([])
   const [tileColumn, setTileColumn] = useState(4);
   const [tileRow, setTileRow] = useState(2);
@@ -88,6 +88,7 @@ const App = () => {
           width: cropWidth,
           height: cropHeight,
           filepath: file.path,
+          scale: scale,
           index: i,
         }
         return arg
