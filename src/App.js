@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
   right: {
     flexGrow: 1,
-    padding: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));
 
@@ -123,8 +123,8 @@ const App = () => {
           />
         </Grid>
         <Grid item xs={7}>
-          <Grid container className={classes.right}>
-            <Grid item xs={12}>
+          <Grid container>
+            <Grid item xs={12} className={classes.right}>
               <CropView
                 image={cropTargetImage}
                 cropX={cropX}
