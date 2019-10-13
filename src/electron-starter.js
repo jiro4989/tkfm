@@ -120,6 +120,24 @@ const template = [
           mainWindow.webContents.send('add-list-item-req', datas);
         },
       },
+      {
+        role: 'save',
+        label: 'Save as...',
+        click: async () => {
+          // ファイルセーブダイアログを表示する
+          const result = await dialog.showSaveDialog({
+            filters: [
+              {name: "Image File", extensions: ["png", "PNG"]},
+            ],
+          });
+
+          if (result.canceled) {
+            return
+          }
+          const filePath = result.filePath;
+          mainWindow.webContents.send('save-tile-image-req', filePath);
+        },
+      },
     ]
   },
 ]

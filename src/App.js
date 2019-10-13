@@ -82,6 +82,13 @@ const App = () => {
     })
   }
 
+  if (!ipcRenderer._events['save-tile-image-req']) {
+    console.log('SET: save-tile-image-req')
+    ipcRenderer.on('save-tile-image-req', (evt, filePath) => {
+      console.log(filePath, tileImages)
+    })
+  }
+
   if (0 < selectedImageFiles.length) {
     waitResp = true
     const file = selectedImageFiles[0];
