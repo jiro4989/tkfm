@@ -13,3 +13,4 @@ bin           = @["tkfm"]
 
 requires "nim >= 1.0.0"
 requires "nigui >= 0.1.1"
+requires "nimPNG >= 0.2.5"
